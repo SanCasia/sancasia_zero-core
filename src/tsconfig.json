@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "pretty": true,
+    "outFile": "../obj/sancasia_zero_core.js",
+    "sourceMap": true,
+    "stripInternal": true,
+    "noResolve": false,
+    "declaration": true,
+    "target": "es6",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": []
+  }
+}

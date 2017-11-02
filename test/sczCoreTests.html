@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SanCasia Zero Core Tests</title>
+  </head>
+  <body>
+    <script src="../obj/sancasia_zero_core.js"></script>
+    <script src="../obj/sancasia_zero_core.tests.js"></script>
+
+    <script>
+      let failCount = 0;
+
+      console.log("testing EventBus");
+      let eventBusTests = new sczCore.tests.EventBusTests();
+      try
+      {
+        eventBusTests.canRegisterHandler();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        eventBusTests.canUnregisterHandler();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        eventBusTests.canSendAndReciveEvent();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      console.log("failed event bus tests: "  + failCount);
+    </script>
+  </body>
+</html>
