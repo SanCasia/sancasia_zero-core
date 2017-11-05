@@ -9,6 +9,7 @@
     <script src="../obj/sancasia_zero_core.tests.js"></script>
 
     <script>
+      let globalFailCount = 0;
       let failCount = 0;
 
       console.log("testing EventBus");
@@ -44,6 +45,224 @@
       }
 
       console.log("failed event bus tests: "  + failCount);
+      globalFailCount += failCount;
+
+      //
+
+      failCount = 0;
+      console.log("testing component");
+      let componentTests = new sczCore.tests.ComponentTests();
+      try
+      {
+        componentTests.canClone();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        componentTests.canAssign();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      //
+
+      console.log("failed component tests: "  + failCount);
+      globalFailCount += failCount;
+
+      failCount = 0;
+      console.log("testing entity");
+      let entityTests = new sczCore.tests.EntityTests();
+      try
+      {
+        entityTests.canGetId();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canAddComponent();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canHasComponent();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canGetComponent();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canUpdateComponent();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canDeleteComponent();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canAddCache();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canHasCache();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canGetCache();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canUpdateCache();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        entityTests.canDeleteCache();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      console.log("failed entity tests: "  + failCount);
+      globalFailCount += failCount;
+
+      //
+
+      failCount = 0;
+      console.log("testing system");
+      let systemTests = new sczCore.tests.SystemTests();
+      try
+      {
+        systemTests.canRegisterEntity();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        systemTests.canDeregisterEntity();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        systemTests.canProcessEntity();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        systemTests.canProcess();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        systemTests.canHandleEvents();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        systemTests.canBeDeactivated();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      console.log("failed system tests: "  + failCount);
+      globalFailCount += failCount;
+      failCount = 0;
+
+      console.log("failed tests total:" + globalFailCount);
     </script>
   </body>
 </html>

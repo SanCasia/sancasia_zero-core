@@ -18,10 +18,13 @@ namespace sczCore.tests
         event,
         handler);
 
+      // @ts-ignore: Property 'subscribers' is private and only accessible within class 'EventBus'.
       if(!bus.subscribers.has(event))
       {
         throw new Error("event not registered");
       }
+
+      // @ts-ignore: Property 'subscribers' is private and only accessible within class 'EventBus'.
       if(bus.subscribers.get(event).indexOf(handler) == -1)
       {
         throw new Error("handler not registered");
@@ -46,7 +49,7 @@ namespace sczCore.tests
         event,
         handler);
 
-
+      // @ts-ignore: Property 'subscribers' is private and only accessible within class 'EventBus'.
       if(!bus.subscribers.get(event).indexOf(handler) == -1)
       {
         throw new Error("handler not unregistered");
