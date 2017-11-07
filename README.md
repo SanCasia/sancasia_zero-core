@@ -6,32 +6,37 @@ SCZ is by far not the only game engine which is based upon an ECS and that's oka
 
 SanCasia Zero is a Proof of Concept and performance is none of its concerns.
 
-## Event Bus
+## Implementation
+
+### Event Bus
 An Event Bus is a software component which provides a communication channel. The concept is based on publishers and subscribers. The publisher publishes events through the event bus which will be received by all subscribers currently subscribed to this event type. Since nether publisher nor subscriber need to know each other, decoupled communication is achieved.
 
-## Entity Component System
+### Entity Component System
 In an entity component system objects are expressed through entities and there components. Changes are achieved through Systems.
 
-### Entity
-Entities consist of a list of components and an id. The entitys component descirbe the current state of there entity. Entities hold no information other then there identity by them self.
+#### Entity
+Entities consist of a list of components and an id. The entitys components describe the current state of there entity. Entities hold no information other then there identity by them self.
 
 Implementations vary from approach to approach. Some choose to use as little as a list to represent there entities others like to give entites more responsibility. I choose to try a data driven approach and implemented my entities with a list of components and some supporting functions.
 
 We use components to represent all objects.
 
-### Component
+#### Component
 A component is basically a data container and holds most of the relevant data needed by the application. Components are value object meaning that they have no identity by them self. They only have meaning if they are part of an Entity.
 
 Implementations vary from approach to approach. Some choose to use plain old structs others like to give components more responsibility. I choose to try a data driven approach and implemented my components as an abstract class with methods to clone and to assign.
 
 We use components to store the properties of an entity.
 
-### System
+#### System
 Systems hold most of the games logic. They act on entities and there components and change there values. Systems should only have one responsibility (single responsibility principel) and thus there are typiclly not just a few systems involved in one application.
 
 To further decouple software components I choose to make systems subscribers of events on the event bus. The his enables easy activation and deactivation of systems.
 
 We use systems to define our applications logic.
+
+### Scene
+A scene is a collection of game logic. It is most commenly used to model independent parts of a games world because scenes handel activation and deactivation of the relevant systems via events for you.
 
 ## Decisions
 In this section I collect some of the decision I made for this project.
@@ -79,4 +84,4 @@ If systems can handle multiple registrations of/by the same entity (see "Can sys
 The base implementation of the system requests the creation of a cache (or components bag) form the registerd entity. The entity is in full controll of this cache and thus capable of creating differing caches for repeted registrations.
 
 ## Sources
-[1]] Wikipedia, Entity-component-system, 18/02 2017,  https://en.wikipedia.org/wiki/Entity_component_system
+[1] Wikipedia, Entity-component-system, 18/02 2017,  https://en.wikipedia.org/wiki/Entity_component_system

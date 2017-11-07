@@ -2,6 +2,9 @@ namespace sczCore
 {
   export interface System
   {
+    activate(): void;
+    deactivate(): void;
+    readonly isActive: boolean;
     registerEntity(entity: Entity):void;
     deregisterEntity(id: number): void;
     process(deltaTime: number): void;
@@ -10,13 +13,22 @@ namespace sczCore
   export abstract class SystemBase implements System
   {
     protected entities: Map<number, Entity>;
-    protected components: Array<Function>;
+    protected requires: Array<Function>;
     protected eventBus: EventBus;
     protected event: string;
+    protected _isActive: boolean;
 
-    constructor(components: Array<Function>, eventBus: EventBus, event: string)
+    public get isActive(): boolean
     {
-      this.components = components;
+      return this._isActive;
+    }
+
+    constructor(
+      requires: Array<Function>,
+      eventBus: EventBus, event: string)
+    {
+
+      this.requires = requires;
       this.entities = new Map<number, Entity>();
 
       this.eventBus = eventBus;
@@ -26,16 +38,18 @@ namespace sczCore
     public activate(): void
     {
       this.eventBus.subscribe(this.event, this.process);
+      this._isActive = true;
     }
 
     public deactivate(): void
     {
       this.eventBus.unsubscribe(this.event, this.process);
+      this._isActive = false;
     }
 
     public registerEntity(entity: Entity): void
     {
-      entity.createCache(this, this.components);
+      entity.createCache(this, this.requires);
       this.entities.set(entity.getId(), entity);
     }
 
@@ -57,6 +71,6 @@ namespace sczCore
     }
 
     protected abstract processEntity(
-      deltaTime: number, components: Array<Component>): void;
+      deltaTime: number, requires: Array<Component>): void;
   }
 }

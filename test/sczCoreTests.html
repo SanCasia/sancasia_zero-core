@@ -262,6 +262,85 @@
       globalFailCount += failCount;
       failCount = 0;
 
+
+      failCount = 0;
+      console.log("testing scene");
+      let sceneTests = new sczCore.tests.SceneTests();
+
+      try
+      {
+        sceneTests.canGetId();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        sceneTests.canAddSystem();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        sceneTests.canHasSystem();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        sceneTests.canRemoveSystem();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        sceneTests.canActivate();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        sceneTests.canDeactivate();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        sceneTests.canHandleEvents();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      console.log("failed scene tests: "  + failCount);
+      globalFailCount += failCount;
+      failCount = 0;
+
       console.log("failed tests total:" + globalFailCount);
     </script>
   </body>
