@@ -19,14 +19,15 @@ namespace sczCore
     protected readonly id: number;
     protected systems: Map<Function, System>;
     protected eventBus: EventBus;
-    public static event = "event_scene_change";
     protected _isActive: boolean;
 
     constructor(id: number, eventBus: EventBus)
     {
       this.id = id;
       this.eventBus = eventBus;
-      this.eventBus.subscribe(SceneBase.event, this.sceneChangeListener);
+      this.eventBus.subscribe(
+        EngineEvent.SceneChange,
+        this.sceneChangeListener);
       this.systems = new Map<Function, System>();
     }
 

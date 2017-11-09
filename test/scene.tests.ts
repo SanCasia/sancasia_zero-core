@@ -28,7 +28,7 @@ namespace sczCore.tests
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
-      let system = new TestSystem([], eventBus, "no_subscription")
+      let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
       scene.addSystem(system);
 
@@ -42,7 +42,7 @@ namespace sczCore.tests
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
-      let system = new TestSystem([], eventBus, "no_subscription")
+      let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
       scene.addSystem(system);
 
@@ -56,7 +56,7 @@ namespace sczCore.tests
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
-      let system = new TestSystem([], eventBus, "no_subscription")
+      let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
       scene.addSystem(system);
       scene.removeSystem(TestSystem);
@@ -71,7 +71,7 @@ namespace sczCore.tests
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
-      let system = new TestSystem([], eventBus, "no_subscription")
+      let system = new TestSystem([], eventBus, EngineEvent.Computation);
       scene.addSystem(system);
 
       if(system.isActive)
@@ -91,7 +91,7 @@ namespace sczCore.tests
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
-      let system = new TestSystem([], eventBus, "no_subscription")
+      let system = new TestSystem([], eventBus, EngineEvent.Computation);
       scene.addSystem(system);
 
       if(system.isActive)
@@ -112,7 +112,7 @@ namespace sczCore.tests
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
-      let system = new TestSystem([], eventBus, "no_subscription")
+      let system = new TestSystem([], eventBus, EngineEvent.Computation)
       scene.addSystem(system);
 
       if(system.isActive)
@@ -120,14 +120,14 @@ namespace sczCore.tests
         throw new Error("scene activated system early");
       }
 
-      eventBus.publish(SceneBase.event, [0, SceneAction.Activate]);
+      eventBus.publish(EngineEvent.SceneChange, [0, SceneAction.Activate]);
 
       if(!system.isActive)
       {
         throw new Error("scene did not activate system");
       }
 
-      eventBus.publish(SceneBase.event, [0, SceneAction.Deactivate]);
+      eventBus.publish(EngineEvent.SceneChange, [0, SceneAction.Deactivate]);
 
       if(system.isActive)
       {

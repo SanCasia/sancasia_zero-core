@@ -15,7 +15,7 @@ namespace sczCore
     protected entities: Map<number, Entity>;
     protected requires: Array<Function>;
     protected eventBus: EventBus;
-    protected event: string;
+    protected event: EngineEvent;
     protected _isActive: boolean;
 
     public get isActive(): boolean
@@ -25,7 +25,7 @@ namespace sczCore
 
     constructor(
       requires: Array<Function>,
-      eventBus: EventBus, event: string)
+      eventBus: EventBus, event: EngineEvent)
     {
 
       this.requires = requires;

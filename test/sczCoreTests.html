@@ -12,7 +12,7 @@
       let globalFailCount = 0;
       let failCount = 0;
 
-      console.log("testing EventBus");
+      console.log("testing event bus");
       let eventBusTests = new sczCore.tests.EventBusTests();
       try
       {
@@ -260,7 +260,6 @@
 
       console.log("failed system tests: "  + failCount);
       globalFailCount += failCount;
-      failCount = 0;
 
 
       failCount = 0;
@@ -339,7 +338,53 @@
 
       console.log("failed scene tests: "  + failCount);
       globalFailCount += failCount;
+
       failCount = 0;
+      console.log("testing engine");
+      let engineTests = new sczCore.tests.EngineTests();
+
+      try
+      {
+        engineTests.canStart();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        engineTests.canTellIfRunning();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        engineTests.canStart();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        engineTests.canRun();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      console.log("failed engine tests: "  + failCount);
+      globalFailCount += failCount;
 
       console.log("failed tests total:" + globalFailCount);
     </script>
