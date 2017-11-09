@@ -52,6 +52,20 @@ namespace sczCore.tests
       }
     }
 
+    public canGetSystem()
+    {
+      let eventBus = new EventBus();
+      let scene = new SceneBase(0, eventBus);
+      let system = new TestSystem([], eventBus, EngineEvent.Computation);
+
+      scene.addSystem(system);
+
+      if(system != scene.getSystem(TestSystem))
+      {
+        throw new Error("scene can not get system");
+      }
+    }
+
     public canRemoveSystem()
     {
       let eventBus = new EventBus();
@@ -63,7 +77,7 @@ namespace sczCore.tests
 
       if(scene.hasSystem(TestSystem))
       {
-        throw new Error("scene can not add system");
+        throw new Error("scene can not remove system");
       }
     }
 

@@ -298,6 +298,16 @@
 
       try
       {
+        sceneTests.canGetSystem();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
         sceneTests.canRemoveSystem();
       }
       catch(error)
@@ -385,6 +395,84 @@
 
       console.log("failed engine tests: "  + failCount);
       globalFailCount += failCount;
+
+      failCount = 0;
+      console.log("testing game");
+      let gameTests = new sczCore.tests.GameTests();
+
+      try
+      {
+        gameTests.canCreate();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        gameTests.canGetEventBus();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        gameTests.canAddRemoveScene();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        gameTests.canActivateScene();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        gameTests.canAddSystem();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        gameTests.canAddEntity();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      try
+      {
+        gameTests.canStartStop();
+      }
+      catch(error)
+      {
+        failCount++;
+        console.error(error);
+      }
+
+      console.log("failed game tests: "  + failCount);
+      globalFailCount += failCount;
+
 
       console.log("failed tests total:" + globalFailCount);
     </script>

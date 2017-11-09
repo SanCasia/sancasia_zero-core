@@ -2,7 +2,11 @@ namespace sczCore
 {
   export interface Scene
   {
+    getId(): number;
     addSystem(system: System): void;
+    hasSystem(systemType: Function): boolean;
+    getSystem(systemType: Function): System;
+    removeSystem(systemType: Function): void;
     activate(): void;
     deactivate(): void;
     readonly isActive: boolean;
@@ -43,17 +47,38 @@ namespace sczCore
 
     public addSystem(system: System): void
     {
+      if(this.hasSystem(system.constructor))
+      {
+        throw new Error(
+          `scene already has this type of system: ${system.constructor}`);
+      }
+
       this.systems.set(system.constructor, system);
     }
 
-    public hasSystem(system: Function)
+    public hasSystem(systemType: Function)
     {
-      return this.systems.has(system);
+      return this.systems.has(systemType);
     }
 
-    public removeSystem(system: Function)
+    public getSystem(systemType: Function): System
     {
-      this.systems.delete(system);
+      if(!this.hasSystem(systemType))
+      {
+        throw new Error(`scene has no such system: ${systemType}`);
+      }
+      
+      return this.systems.get(systemType);
+    }
+
+    public removeSystem(systemType: Function)
+    {
+      if(!this.hasSystem(systemType))
+      {
+        throw new Error(`scene has no such system: ${systemType}`);
+      }
+
+      this.systems.delete(systemType);
     }
 
     public activate(): void

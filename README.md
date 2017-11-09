@@ -123,6 +123,7 @@ game.registerEntity(100, DoorSystem, 102);
 ...
 
 // and finally
+game.activateScene(100);
 game.start();
 
 ```
