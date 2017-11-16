@@ -43,13 +43,11 @@ namespace sczCore.tests
     public process(_: number): void {
       throw new Error("Method not implemented.");
     }
-
-
   }
 
   export class EngineTests
   {
-    public canStart()
+    public static canStart()
     {
 
       let eventBus = new EventBus();
@@ -76,7 +74,7 @@ namespace sczCore.tests
       engine.stop();
     }
 
-    public canTellIfRunning()
+    public static canTellIfRunning()
     {
 
       let eventBus = new EventBus();
@@ -102,16 +100,16 @@ namespace sczCore.tests
       }
     }
 
-    public canStop()
+    public static canStop()
     {
 
       let eventBus = new EventBus();
       let engine = new Engine(eventBus);
       let system = new TestSystem(eventBus);
 
-      if(!engine.isRunning)
+      if(engine.isRunning)
       {
-        throw new Error();
+        throw new Error("engine running before start");
       }
 
       engine.start();
@@ -135,7 +133,7 @@ namespace sczCore.tests
       });
     }
 
-    public canRun()
+    public static canRun()
     {
       let eventBus = new EventBus();
       let engine = new Engine(eventBus);

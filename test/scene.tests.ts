@@ -13,7 +13,7 @@ namespace sczCore.tests
 
   export class SceneTests
   {
-    public canGetId()
+    public static canGetId()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(3.141, eventBus);
@@ -24,7 +24,7 @@ namespace sczCore.tests
       }
     }
 
-    public canAddSystem()
+    public static canAddSystem()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
@@ -38,7 +38,7 @@ namespace sczCore.tests
       }
     }
 
-    public canHasSystem()
+    public static canHasSystem()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
@@ -52,7 +52,7 @@ namespace sczCore.tests
       }
     }
 
-    public canGetSystem()
+    public static canGetSystem()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
@@ -66,7 +66,7 @@ namespace sczCore.tests
       }
     }
 
-    public canRemoveSystem()
+    public static canRemoveSystem()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
@@ -81,7 +81,7 @@ namespace sczCore.tests
       }
     }
 
-    public canActivate()
+    public static canActivate()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
@@ -101,7 +101,7 @@ namespace sczCore.tests
       }
     }
 
-    public canDeactivate()
+    public static canDeactivate()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
@@ -122,7 +122,7 @@ namespace sczCore.tests
       }
     }
 
-    public canHandleEvents()
+    public static canHandleEvents()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);

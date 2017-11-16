@@ -5,7 +5,7 @@ namespace sczCore.tests
 {
   export class EventBusTests
   {
-    public canRegisterHandler()
+    public static canRegisterHandler()
     {
       let bus = new EventBus();
       let event = "test_event";
@@ -32,7 +32,7 @@ namespace sczCore.tests
 
     }
 
-    public canUnregisterHandler()
+    public static canUnregisterHandler()
     {
       let bus = new EventBus();
       let event = "test_event";
@@ -56,7 +56,7 @@ namespace sczCore.tests
       }
     }
 
-    public canSendAndReciveEvent()
+    public static canSendAndReciveEvent()
     {
       let bus = new EventBus();
       let event = "test_event";

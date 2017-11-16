@@ -10,7 +10,7 @@ namespace sczCore.tests
 
   export class ComponentTests
   {
-    public canClone()
+    public static canClone()
     {
       let original = new TestComponent();
       original.testValue = "3.141";
@@ -24,7 +24,7 @@ namespace sczCore.tests
       }
     }
 
-    public canAssign()
+    public static canAssign()
     {
       let original = new TestComponent();
       original.testValue = "3.141";

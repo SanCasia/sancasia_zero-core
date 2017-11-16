@@ -18,12 +18,12 @@ namespace sczCore.tests
 
   export class GameTests
   {
-    public canCreate()
+    public static canCreate()
     {
       new Game();
     }
 
-    public canGetEventBus()
+    public static canGetEventBus()
     {
       let game = new Game();
       let eventBus = game.getEventBus();
@@ -34,7 +34,7 @@ namespace sczCore.tests
       }
     }
 
-    public canEntity()
+    public static canEntity()
     {
       let game = new Game();
       game.addEntity(new Entity(0));
@@ -49,7 +49,7 @@ namespace sczCore.tests
       }
     }
 
-    public canAddRemoveScene()
+    public static canAddRemoveScene()
     {
       let game = new Game();
       game.addScene(new SceneBase(0, game.getEventBus()));
@@ -64,7 +64,7 @@ namespace sczCore.tests
       }
     }
 
-    public canActivateScene()
+    public static canActivateScene()
     {
       let game = new Game();
       let scene = new SceneBase(0, game.getEventBus());
@@ -91,7 +91,7 @@ namespace sczCore.tests
 
     }
 
-    public canAddSystem()
+    public static canAddSystem()
     {
       let game = new Game();
       let scene = new SceneBase(0, game.getEventBus());
@@ -106,7 +106,7 @@ namespace sczCore.tests
       }
     }
 
-    public canAddEntity()
+    public static canAddEntity()
     {
       let game = new Game();
       let scene = new SceneBase(0, game.getEventBus());
@@ -119,7 +119,7 @@ namespace sczCore.tests
       game.registerEntity(0, TestSystem, 0);
     }
 
-    public canStartStop()
+    public static canStartStop()
     {
       let game = new Game();
 

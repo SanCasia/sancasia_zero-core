@@ -14,7 +14,7 @@ namespace sczCore.tests
 
   export class EntityTests
   {
-    public canGetId()
+    public static canGetId()
     {
       let entity = new Entity(3.141);
       if(entity.getId() != 3.141)
@@ -23,7 +23,7 @@ namespace sczCore.tests
       }
     }
 
-    public canAddComponent()
+    public static canAddComponent()
     {
       let entity = new Entity(0);
       let componentA = new TestAComponent();
@@ -49,7 +49,7 @@ namespace sczCore.tests
       }
     }
 
-    public canHasComponent()
+    public static canHasComponent()
     {
       let entity = new Entity(0);
       let componentA = new TestAComponent();
@@ -75,7 +75,7 @@ namespace sczCore.tests
       }
     }
 
-    public canGetComponent()
+    public static canGetComponent()
     {
       let entity = new Entity(0);
       let componentA = new TestAComponent();
@@ -97,7 +97,7 @@ namespace sczCore.tests
       }
     }
 
-    public canUpdateComponent()
+    public static canUpdateComponent()
     {
       let entity = new Entity(0);
       let component = new TestAComponent();
@@ -127,7 +127,7 @@ namespace sczCore.tests
       }
     }
 
-    public canDeleteComponent()
+    public static canDeleteComponent()
     {
       let entity = new Entity(0);
       let componentA = new TestAComponent();
@@ -153,7 +153,7 @@ namespace sczCore.tests
       }
     }
 
-    public canAddCache()
+    public static canAddCache()
     {
       let entity = new Entity(0);
       let cacheId = 3.141;
@@ -173,7 +173,7 @@ namespace sczCore.tests
       }
     }
 
-    public canHasCache()
+    public static canHasCache()
     {
       let entity = new Entity(0);
       let cacheId = 3.141;
@@ -193,7 +193,7 @@ namespace sczCore.tests
       }
     }
 
-    public canGetCache()
+    public static canGetCache()
     {
       let entity = new Entity(0);
       let cacheId = 3.141;
@@ -212,7 +212,7 @@ namespace sczCore.tests
       }
     }
 
-    public canUpdateCache()
+    public static canUpdateCache()
     {
       let entity = new Entity(0);
       let cacheId = 3.141;
@@ -242,7 +242,7 @@ namespace sczCore.tests
       }
     }
 
-    public canDeleteCache()
+    public static canDeleteCache()
     {
       let entity = new Entity(0);
       let cacheId = 3.141;

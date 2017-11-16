@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SanCasia Zero Core Tests</title>
+  </head>
+  <body>
+    <script src="../obj/sancasia_zero.core.js"></script>
+    <script src="../obj/sancasia_zero.core.tests.js"></script>
+
+    <script>
+      let errorCount = 0;
+      let testCount = 0;
+      let testRunner = new test.TestRunner(sczCore.tests);
+      testRunner.run(
+        (suite, test) =>
+        {
+          testCount++;
+          console.log(suite.name + "::" + test.name + " [...]");
+        },
+        (suite, test, error) =>
+        {
+          if(error)
+          {
+            errorCount++;
+            console.error(error);
+            console.log(suite.name + "::" + test.name + " [FAILED]");
+          }
+          else
+          {
+            console.log(suite.name + "::" + test.name + " [SUCCESS]");
+          }
+        });
+        console.log("success rate: "
+          + (testCount - errorCount) + "/" + testCount);
+    </script>
+  </body>
+</html>

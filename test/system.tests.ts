@@ -42,7 +42,7 @@ namespace sczCore.tests
 
   export class SystemTests
   {
-    public canRegisterEntity()
+    public static canRegisterEntity()
     {
       let system = new TestSystem(new EventBus());
       let entity = new Entity(0);
@@ -68,7 +68,7 @@ namespace sczCore.tests
       }
     }
 
-    public canDeregisterEntity()
+    public static canDeregisterEntity()
     {
       let system = new TestSystem(new EventBus());
       let entity = new Entity(0);
@@ -100,7 +100,7 @@ namespace sczCore.tests
       }
     }
 
-    public canProcessEntity()
+    public static canProcessEntity()
     {
       let system = new TestSystem(new EventBus());
       let compoent = new TestComponent();
@@ -112,7 +112,7 @@ namespace sczCore.tests
       }
     }
 
-    public canProcess()
+    public static canProcess()
     {
       let system = new TestSystem(new EventBus());
       let entity = TestEntityFactory.createTestEntity(0, [system]);
@@ -125,7 +125,7 @@ namespace sczCore.tests
       }
     }
 
-    public canHandleEvents()
+    public static canHandleEvents()
     {
       let eventBus = new EventBus();
       let system = new TestSystem(eventBus);
@@ -140,7 +140,7 @@ namespace sczCore.tests
       }
     }
 
-    public canBeDeactivated()
+    public static canBeDeactivated()
     {
       let eventBus = new EventBus();
       let system = new TestSystem(eventBus);
