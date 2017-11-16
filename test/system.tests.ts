@@ -1,4 +1,4 @@
-/// <reference path="../obj/sancasia_zero_core" />
+/// <reference path="../obj/sancasia_zero.core.d.ts" />
 
 
 namespace sczCore.tests
@@ -10,7 +10,8 @@ namespace sczCore.tests
 
   class TestSystem extends SystemBase
   {
-    public static readonly event = "test_event";
+    public static readonly event = EngineEvent.Computation;
+    
     constructor(eventBus: EventBus)
     {
       super([TestComponent], eventBus, TestSystem.event);

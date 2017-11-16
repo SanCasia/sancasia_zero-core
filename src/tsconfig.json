@@ -5,7 +5,7 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "pretty": true,
-    "outFile": "../obj/sancasia_zero_core.js",
+    "outFile": "../obj/sancasia_zero.core.js",
     "sourceMap": true,
     "stripInternal": true,
     "noResolve": false,

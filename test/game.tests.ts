@@ -1,4 +1,4 @@
-/// <reference path="../obj/sancasia_zero_core" />
+/// <reference path="../obj/sancasia_zero.core.d.ts" />
 
 
 namespace sczCore.tests

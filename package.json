@@ -1,0 +1,30 @@
+{
+  "name": "sancasia_zero-core",
+  "version": "1.0.0",
+  "description": "This is the core package of the SanCasia Zero engine",
+  "main": "obj/sancasia_zero_core.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: Tests at test/sczCoreTests.html\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SanCasia/sancasia_zero-core.git"
+  },
+  "keywords": [
+    "game-engine",
+    "entity-component-system",
+    "eventbus",
+    "sancasia",
+    "sancasia-zero",
+    "game-engine-core"
+  ],
+  "author": "Simon Kindhauser",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SanCasia/sancasia_zero-core/issues"
+  },
+  "homepage": "https://github.com/SanCasia/sancasia_zero-core#readme"
+}

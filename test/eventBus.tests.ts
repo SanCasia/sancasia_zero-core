@@ -1,4 +1,4 @@
-/// <reference path="../obj/sancasia_zero_core" />
+/// <reference path="../obj/sancasia_zero.core.d.ts" />
 
 
 namespace sczCore.tests
@@ -7,7 +7,7 @@ namespace sczCore.tests
   {
     public canRegisterHandler()
     {
-      let bus = new sczCore.EventBus();
+      let bus = new EventBus();
       let event = "test_event";
       let handler = (message: any) =>
       {
@@ -34,7 +34,7 @@ namespace sczCore.tests
 
     public canUnregisterHandler()
     {
-      let bus = new sczCore.EventBus();
+      let bus = new EventBus();
       let event = "test_event";
       let handler = (message: any) =>
       {
@@ -58,7 +58,7 @@ namespace sczCore.tests
 
     public canSendAndReciveEvent()
     {
-      let bus = new sczCore.EventBus();
+      let bus = new EventBus();
       let event = "test_event";
       let wasCalled = false;
       let handler = (correctParam: boolean) =>

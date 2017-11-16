@@ -6,6 +6,218 @@ SCZ is by far not the only game engine which is based upon an ECS and that's oka
 
 SanCasia Zero is a Proof of Concept and performance is none of its concerns.
 
+## npm
+SanCasia Zero: Core is available to you via npm.
+
+``` bash
+npm install --save sancasia_zero-core
+```
+
+## Getting Started
+SanCasia Zero: Core only consists of the most essential parts of the SanCasia game engine. If you want to develop your own games with SanCasia consider building on top of [SanCasia Zero: Base](https://github.com/SanCasia/sancasia_zero-base).
+
+If on the other hand you are willing to understand how the SanCasia game engine works I recommend you to continue reading this paper as well as the source code and the associated test cases.
+
+All examples can be found under `demo/hello_world`
+
+### Hello World
+The very first thing you probably want to do is to write a little hello world.
+
+First of all you will need a system:
+``` typescript
+// we can extend from system base
+class HelloWorldSystem extends SystemBase implements System
+{
+  public constructor(eventBus: EventBus)
+  {
+    // pass the event bus and the event type "Render" to the super constructor.
+    // the super constructor will automatically register on the specified event.
+    // don't worry about the "[]" yet.
+    super([], eventBus, EngineEvent.Render);
+  }
+
+  // this function will get called by the game engine.
+  // you can again see "[]".
+  // the deltaTime tells us how much time has passed since the last call
+  public processEntity(deltaTime: number, []: Array<Component>)
+  {
+    // log "hello world" to the console
+    console.log("Hello World!")
+  }
+}
+```
+
+We are almost done. Lets create and start the game engine:
+``` typescript
+public static main()
+{
+  // create a new event bus
+  // the event bus is used for communication between the objects
+  let eventBus = new EventBus();
+  // create a new engine
+  let engine = new Engine(eventBus);
+  let system = new HelloWorldSystem(eventBus);
+  // we need to add at least one entity for the system to compute
+  system.registerEntity(new Entity(0));
+
+  // lets start the engine!
+  engine.start();
+  // ... and activate the system!
+  system.activate();
+}
+
+> Hello World!
+> Hello World!
+> ...
+```
+That's it! We have created our fist little application based on SanCasia Zero.
+
+### Part 2: Entities and Components
+Now lets change the above example and add some entities with components:
+``` typescript
+class HelloWorldComponent extends Component
+{
+  public name: string;
+}
+```
+We also want to change a few lines in the system
+``` typescript
+class HelloWorldSystem extends SystemBase implements System
+{
+  public constructor(eventBus: EventBus)
+  {
+    // the first argument tells the system base class
+    // which components entities need to provide
+    // if they want to be processed by us.
+    super([HelloWorldComponent], eventBus, EngineEvent.Render);
+  }
+
+  // the requested components are then passed to this function
+  // and we can access and process them with ease.
+  public processEntity(deltaTime: number, [component]: [HelloWorldComponent])
+  {
+    // log "hello world" to the console
+    console.log(`Hello ${ component.name }!`)
+  }
+}
+```
+Now that our system requests a "complex" entity it seems to be the right time to write a entity factory:
+``` typescript
+class HelloWorldEntityFactory
+{
+  public static create(id: number, name: string): Entity
+  {
+    // create the entity
+    let entity = new Entity(id);
+    // create relevant component
+    let component = new HelloWorldComponent();
+    // initialise component
+    component.name = name;
+    // add component to entity
+    entity.addComponent(component);
+
+    return entity;
+  }
+}
+```
+Lets update our main function to embrace these changes:
+``` typescript
+public static main()
+{
+  let eventBus = new EventBus();
+  let engine = new Engine(eventBus);
+  let system = new HelloWorldSystem(eventBus);
+  // utilise the factory to create the entities
+  let ella = HelloWorldEntityFactory.create(0, "Ella");
+  let steve = HelloWorldEntityFactory.create(1, "Steve");
+  system.registerEntity(ella);
+  system.registerEntity(steve);
+
+  engine.start();
+  system.activate();
+}
+
+> Hello Ella!
+> Hello Steve!
+> Hello Ella!
+> ...
+```
+### Part 3: Scenes and the Game
+That's nice and all but what about scene changes?
+
+For scene changes we recommend to utilise the game object. It implements and hides the necessary logic and offers an interface for most of the things you will need to do including the handling of systems and entities.
+``` typescript
+public static main()
+{
+  // create the new game object
+  // this is initializing a new event bus as well as a new engine
+  let game = new Game();
+
+  let ellasId = 0;
+  let ellasSceneId = 0;
+  // define the first scene
+  // scene base suffice for this example
+  game.addScene(new SceneBase(ellasSceneId, game.getEventBus()));
+  // add a system to the scene
+  game.addSystem(ellasSceneId, new HelloWorldSystem(game.getEventBus()));
+  // add en entity to the game
+  game.addEntity(HelloWorldEntityFactory.create(ellasId, "Ella"));
+  // register an entity in a system
+  game.registerEntity(ellasSceneId, HelloWorldSystem, ellasId);
+
+  let stevesId = 1;
+  let stevesSceneId = 1;
+  // define the second scene
+  game.addScene(new SceneBase(stevesSceneId, game.getEventBus()));
+  // add a system to the scene
+  game.addSystem(stevesSceneId, new HelloWorldSystem(game.getEventBus()));
+  // add en entity to the game
+  game.addEntity(HelloWorldEntityFactory.create(stevesId, "Steve"));
+  // register an entity in a system
+  game.registerEntity(stevesSceneId, HelloWorldSystem, stevesId);
+
+  // here we use a local variable to know which scene is currently active
+  let activeSceneIndicator = ellasSceneId;
+
+  // define the scene change to happen on the keydown event
+  document.addEventListener("keydown", () =>
+  {
+    // switching based on active scene
+    if(activeSceneIndicator == ellasSceneId)
+    {
+      // deactivate Ellas scene
+      game.deactivateScene(ellasSceneId);
+      // activate Steves scene
+      game.activateScene(stevesSceneId);
+      // update our indicator
+      activeSceneIndicator = stevesSceneId;
+    }
+    else
+    {
+      // deactivating Steves scene
+      game.deactivateScene(stevesSceneId);
+      // activating Ellas scene
+      game.activateScene(ellasSceneId);
+      // updating our indicator
+      activeSceneIndicator = ellasSceneId;
+    }
+  });
+
+  // starting the game
+  game.start();
+  // activating the first scene, Ellas scene
+  game.activateScene(ellasSceneId);
+}
+
+> Hello Ella!
+> Hello Ella!
+< <key-stroke>
+> Hello Steve!
+< <key-stroke>
+> Hello Ella!
+> ...
+```
+
 ## Implementation
 
 ### Event Bus
@@ -39,96 +251,9 @@ We use systems to define our applications logic.
 A scene is a collection of game logic. It is most commonly used to model independent parts of a games world because scenes handle activation and deactivation of the relevant systems via events for you.
 
 ### Engine
-The term engine was probably chosen due to the responsibility of the game engien to drive the game. It is the engines job to tell the correct systems at the right time to start there computation. It is usually also the part which has knowledge over everything within the game.
+The term engine was probably chosen due to the responsibility of the game engine to drive the game. It is the engines job to tell the correct systems at the right time to start there computation. It is usually also the part which has knowledge over everything within the game.
 
 Due to the loose coupling in this implementation it was possible to have the engine do its job with out any knowledge of any other software component.
-
-## Decisions
-In this section I collect some of the decision I made for this project.
-
-### How does the engine start the computation of systems?
-Systems subscribe on events like "engine_prerender" or "engine_render" which in return get called by the engine. It is the systems responsibility to subscribe to the correct event. This enables easy activation and deactivation of systems as well as the implementation of a general purpose engine.
-
-### Can entities share components?
-Example: If the player enters another part of the world (aka changes scenes) will he be the same entity?
-
-If not it would be convenient for those two entities to share some components like maybe the health component, inventory etc.
-
-Else if he continues to be the same entity, the entity has to be shared between systems of different scenes. Thought this is not as much of a problem since entities are uniquely identifiable.
-
-Entities cannot share components. Components are value objects.
-
-Related decisions:
-Can scenes share systems?
-
-### Can scenes share systems?
-Example: If the player enters another part of the world (aka changes scenes) will his entity (provided it stays the same) switch instances of systems?
-
-If systems are shared (reused) the same system would have to be able to handle multiple entries for the same entity (see "Can systems handle multiple registrations by the same entity?")
-
-However this is extremely unpractical when it comes to activation and deactivation of scenes them self. This will not be explicitly supported.
-
-Related decisions:
-Can entities share components?
-Can systems handle multiple registrations by the same entity?
-
-### Can systems handle multiple registrations by the same entity?
-Use case: The entity is in some kind of superposition (two places at once). The two superposition share some properties (components).
-
-The entity could register two translate components with possibly the same render component (different position, same view model) to the render system. It would have to do the same with many other system as well (damage system etc).
-
-This could be solved with "component bags". Basically systems wouldn't act on entities anymore but on these bags of components. Further more the components in these collection do not have to belonging to the same entity.
-
-Implementing this with two entities would ether not be supported (see "Can entities share components?") or would require some kind of superposition system which synchronizes the components.
-
-This is not possible due to serious issues encountered during implementation.
-
-### How do entities and systems connect?
-If systems can handle multiple registrations of/by the same entity (see "Can systems handle multiple registrations by the same entity?") the act of registration isn't as straight forward anymore.
-
-The base implementation of the system requests the creation of a cache (or components bag) from the registered entity. The entity is in full control of this cache and thus capable of creating differing caches for repeated registrations.
-
-### Should the engine control everything?
-Should I be able to access the whole game via the engine?
-``` typescript
-engine.addScene(scene);
-engine.getActiveScenes();
-engine.addEntity(scene.getId(), systemType, entity);
-engine.getEntity(entityId);
-```
-This could be very convenient for the developers but goes - in my eyes - against the single responsibility principal. I would prefer to have this structure in a separated class. This class, lets call it game, could be used as follows.
-``` typescript
-// this already creates an engine including event bus
-let game = new Game();
-
-// adds inter-scene entities to the game
-game.addEntity(PlayerFactory.create(000));
-
-// creates a scene
-game.addScene(new DesertScene(100));
-// add systems
-game.addSystem(100, new RenderSystem(game.getEventBus()));
-game.addSystem(100, new PlayerSystem(game.getEventBus()));
-game.addSystem(100, new DoorSystem(game.getEventBus()));
-// create and add entities
-game.registerEntity(100, RenderSystem, 000);
-game.registerEntity(100, PlayerSystem, 000);
-game.addEntity(PyramidFactory.create(101, ...));
-game.registerEntity(100, RenderSystem, 101);
-game.addEntity(DoorFactory.create(102, ...));
-game.registerEntity(100, RenderSystem, 102);
-game.registerEntity(100, DoorSystem, 102);
-
-// next scene
-...
-
-// and finally
-game.activateScene(100);
-game.start();
-
-```
-This is officially approved.
-
 
 ## Sources
 [1] Wikipedia, Entity-component-system, 18/02 2017,  https://en.wikipedia.org/wiki/Entity_component_system
