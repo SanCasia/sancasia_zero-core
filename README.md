@@ -2,12 +2,12 @@
 SanCasia Version Zero Core: The Core of SanCasia Zero
 
 SanCasia Zero is based on the principles Entity Component Systems[1].
-SCZ is by far not the only game engine which is based upon an ECS and that's okay. It also relays on en EventBus for communication further decoupling dependencies. These two concepts combined allow an interesting degree of independence between the software components.
+SCZ is by far not the only game engine which is based upon an ECS. It relays on an EventBus for communication and to further decouple dependencies. These two concepts combined allow an interesting degree of independence between the software components.
 
-SanCasia Zero is a Proof of Concept and performance is none of its concerns.
+SanCasia Zero is a proof of concept and therefore performance is currently not a concern.
 
 ## npm
-SanCasia Zero: Core is available to you via npm.
+SanCasia Zero: Core is available via npm.
 
 ``` bash
 npm install --save sancasia_zero-core
@@ -16,14 +16,14 @@ npm install --save sancasia_zero-core
 ## Getting Started
 SanCasia Zero: Core only consists of the most essential parts of the SanCasia game engine. If you want to develop your own games with SanCasia consider building on top of [SanCasia Zero: Base](https://github.com/SanCasia/sancasia_zero-base).
 
-If on the other hand you are willing to understand how the SanCasia game engine works I recommend you to continue reading this paper as well as the source code and the associated test cases.
+If on the other hand, you are willing to understand how the SanCasia game engine works, I recommend you to continue reading this article, as well as the source code and the associated test cases.
 
-All examples can be found under `demo/hello_world`
+All examples can be found under `demo/hello_world`.
 
 ### Hello World
 The very first thing you probably want to do is to write a little hello world.
 
-First of all you will need a system:
+The first step is to create a new system:
 ``` typescript
 // we can extend from system base
 class HelloWorldSystem extends SystemBase implements System
@@ -37,7 +37,7 @@ class HelloWorldSystem extends SystemBase implements System
   }
 
   // this function will get called by the game engine.
-  // you can again see "[]".
+  // you can see "[]" again.
   // the deltaTime tells us how much time has passed since the last call
   public processEntity(deltaTime: number, []: Array<Component>)
   {
@@ -47,7 +47,7 @@ class HelloWorldSystem extends SystemBase implements System
 }
 ```
 
-We are almost done. Lets create and start the game engine:
+We are almost done. Let's create and start the game engine:
 ``` typescript
 public static main()
 {
@@ -70,29 +70,29 @@ public static main()
 > Hello World!
 > ...
 ```
-That's it! We have created our fist little application based on SanCasia Zero.
+That's it! We have created our first little game based on SanCasia Zero.
 
 ### Part 2: Entities and Components
-Now lets change the above example and add some entities with components:
+Now, let's change the example above and add some entities which contain components:
 ``` typescript
 class HelloWorldComponent extends Component
 {
   public name: string;
 }
 ```
-We also want to change a few lines in the system
+We also need to change a few lines in the system
 ``` typescript
 class HelloWorldSystem extends SystemBase implements System
 {
   public constructor(eventBus: EventBus)
   {
     // the first argument tells the system base class
-    // which components entities need to provide
-    // if they want to be processed by us.
+    // which components the entities need to provide
+    // if they should be processed by it.
     super([HelloWorldComponent], eventBus, EngineEvent.Render);
   }
 
-  // the requested components are then passed to this function
+  // the requested components are then passed to this method
   // and we can access and process them with ease.
   public processEntity(deltaTime: number, [component]: [HelloWorldComponent])
   {
@@ -101,7 +101,7 @@ class HelloWorldSystem extends SystemBase implements System
   }
 }
 ```
-Now that our system requests a "complex" entity it seems to be the right time to write a entity factory:
+Now that our system requests a "complex" entity, it seems to be the right time to write an entity factory:
 ``` typescript
 class HelloWorldEntityFactory
 {
@@ -109,18 +109,18 @@ class HelloWorldEntityFactory
   {
     // create the entity
     let entity = new Entity(id);
-    // create relevant component
+    // create the relevant component
     let component = new HelloWorldComponent();
-    // initialise component
+    // initialise the component
     component.name = name;
-    // add component to entity
+    // add the component to the entity
     entity.addComponent(component);
 
     return entity;
   }
 }
 ```
-Lets update our main function to embrace these changes:
+Lets adapt our main function to these changes:
 ``` typescript
 public static main()
 {
@@ -145,7 +145,7 @@ public static main()
 ### Part 3: Scenes and the Game
 That's nice and all but what about scene changes?
 
-For scene changes we recommend to utilise the game object. It implements and hides the necessary logic and offers an interface for most of the things you will need to do including the handling of systems and entities.
+For changing the scene it is recommended to utilize the game object. It implements and hides the necessary logic and offers an interface for most of the things you will need to do, including the handling of systems and entities.
 ``` typescript
 public static main()
 {
@@ -156,7 +156,7 @@ public static main()
   let ellasId = 0;
   let ellasSceneId = 0;
   // define the first scene
-  // scene base suffice for this example
+  // scene base is sufficent for this example
   game.addScene(new SceneBase(ellasSceneId, game.getEventBus()));
   // add a system to the scene
   game.addSystem(ellasSceneId, new HelloWorldSystem(game.getEventBus()));
@@ -221,39 +221,39 @@ public static main()
 ## Implementation
 
 ### Event Bus
-An Event Bus is a software component which provides a communication channel. The concept is based on publishers and subscribers. The publisher publishes events through the event bus which will be received by all subscribers currently subscribed to this event type. Since nether publisher nor subscriber need to know each other, decoupled communication is achieved.
+An Event Bus is a software component which provides a communication channel. The concept is based on publishers and subscribers. The publisher publishes events through the event bus which will be received by all subscribers, currently subscribed to this event type. Since neither publisher nor subscriber needs to know each other, decoupled communication is achieved.
 
 ### Entity Component System
-In an entity component system objects are expressed through entities and there components. Changes are achieved through Systems.
+In an entity component system, objects are expressed through entities and their components. Updates are achieved through Systems.
 
 #### Entity
-Entities consist of a list of components and an id. The entities components describe the current state of there entity. Entities hold no information other then there identity by them self.
+Entities consist of a list of components and an id. The components describe the current state of their entity.
 
-Implementations vary from approach to approach. Some choose to use as little as a list to represent there entities others like to give entities more responsibility. I choose to try a data driven approach and implemented my entities with a list of components and some supporting functions.
+Implementations vary between different approaches. Some may choose to use as little as a list to represent their entities, others decide to give entities more responsibility. I choose to try a data-driven approach and implemented the entities so that they store a list of components and some utility functions.
 
-We use components to represent all objects.
+Components are used to represent all objects.
 
 #### Component
-A component is basically a data container and holds most of the relevant data needed by the application. Components are value object meaning that they have no identity by them self. They only have meaning if they are part of an Entity.
+A component is basically a data container and holds most of the relevant data needed by the application. Components are value-object, meaning that they have no identity by them self. They are only relevant if they are part of an entity.
 
-Implementations vary from approach to approach. Some choose to use plain old structs others like to give components more responsibility. I choose to try a data driven approach and implemented my components as an abstract class with methods to clone and to assign.
+Again, different people choose to implement components differently. Some may choose to use structs, others decide to give components more responsibility. I choose to try a data-driven approach and implemented my components as an abstract class with methods to clone and to assign.
 
 We use components to store the properties of an entity.
 
 #### System
-Systems hold most of the games logic. They act on entities and there components and change there values. Systems should only have one responsibility (single responsibility principle) and thus there are typically not just a few systems involved in one application.
+Systems hold most of the logic of the game. They access entities and their components in order to change their values. Systems should have at most one responsibility (single responsibility principle) and thus there are typically a lot of systems in a game.
 
-To further decouple software components I choose to make systems subscribers of events on the event bus. The his enables easy activation and deactivation of systems.
+To further decouple software components I choose to make systems subscribe to events on the event bus. This enables to easily activate and deactivate the systems.
 
-We use systems to define our applications logic.
+We use systems to define the logic of our game.
 
 ### Scene
-A scene is a collection of game logic. It is most commonly used to model independent parts of a games world because scenes handle activation and deactivation of the relevant systems via events for you.
+A scene is a collection of game logic. It is commonly used to represent independent parts of the world of a game. This is because scenes handle activation and deactivation of the relevant systems via events for you.
 
 ### Engine
-The term engine was probably chosen due to the responsibility of the game engine to drive the game. It is the engines job to tell the correct systems at the right time to start there computation. It is usually also the part which has knowledge over everything within the game.
+The term engine was probably chosen due to the responsibility of the game engine to drive the game. It is the engines job to tell the correct systems at the right time to start the computation. It is usually also the part which has knowledge of everything from the game.
 
-Due to the loose coupling in this implementation it was possible to have the engine do its job with out any knowledge of any other software component.
+Due to the loose coupling in SanCasia Zero, it was possible to have the engine do its job without any knowledge of any other software component.
 
 ## Sources
 [1] Wikipedia, Entity-component-system, 18/02 2017,  https://en.wikipedia.org/wiki/Entity_component_system
