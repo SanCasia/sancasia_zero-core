@@ -34,7 +34,7 @@ namespace sczCore.tests
       }
     }
 
-    public static canEntity()
+    public static canAddEntities()
     {
       let game = new Game();
       game.addEntity(new Entity(0));
@@ -42,10 +42,96 @@ namespace sczCore.tests
       {
         throw new Error("entity not visible");
       }
+
+      let exeptionThrown = false;
+      try
+      {
+        game.addEntity(new Entity(0));
+      }
+      catch(Error)
+      {
+        exeptionThrown = true;
+      }
+      if(!exeptionThrown)
+      {
+        throw new Error("entity double registration not detected");
+      }
+    }
+
+    public static canHasEntities()
+    {
+      let game = new Game();
+      game.addEntity(new Entity(0));
+      if(!game.hasEntity(0))
+      {
+        throw new Error("entity [0] not visible");
+      }
+
+      game.addEntity(new Entity(1));
+      if(!game.hasEntity(1))
+      {
+        throw new Error("entity [1] not visible");
+      }
+
       game.removeEntity(0);
       if(game.hasEntity(0))
       {
-        throw new Error("entity not delted");
+        throw new Error("entity [0] not delted");
+      }
+
+      game.removeEntity(1);
+      if(game.hasEntity(1))
+      {
+        throw new Error("entity [1] not delted");
+      }
+    }
+
+    public static canGetEntities()
+    {
+      let game = new Game();
+      game.addEntity(new Entity(0));
+      game.addEntity(new Entity(1));
+      if(game.getEntity(0).getId() != 0)
+      {
+        throw new Error("could not get entity");
+      }
+
+      if(game.getEntity(1).getId() != 1)
+      {
+        throw new Error("could not get entity");
+      }
+    }
+
+    public static canRemoveEntities()
+    {
+      let game = new Game();
+      game.addEntity(new Entity(0));
+      game.addEntity(new Entity(1));
+
+      game.removeEntity(0);
+      if(game.hasEntity(0))
+      {
+        throw new Error("entity [0] not delted");
+      }
+
+      game.removeEntity(1);
+      if(game.hasEntity(1))
+      {
+        throw new Error("entity [1] not delted");
+      }
+
+      let exeptionThrown = false;
+      try
+      {
+        game.removeEntity(0);
+      }
+      catch(Error)
+      {
+        exeptionThrown = true;
+      }
+      if(!exeptionThrown)
+      {
+        throw new Error("entity double registration not detected");
       }
     }
 
@@ -106,7 +192,7 @@ namespace sczCore.tests
       }
     }
 
-    public static canAddEntity()
+    public static canRegisterEntity()
     {
       let game = new Game();
       let scene = new SceneBase(0, game.getEventBus());

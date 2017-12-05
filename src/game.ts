@@ -32,7 +32,7 @@ namespace sczCore
         throw new Error("entity cannot be null");
       }
 
-      if(this.entities.has(entity.getId()))
+      if(this.hasEntity(entity.getId()))
       {
         throw new Error("an entity with this id has already been registered");
       }
@@ -45,9 +45,19 @@ namespace sczCore
       return this.entities.has(entityId);
     }
 
+    public getEntity(entityId: number): Entity
+    {
+      if(!this.hasEntity(entityId))
+      {
+        throw new Error(`entity [${entityId}] not registered`);
+      }
+
+      return this.entities.get(entityId);
+    }
+
     public removeEntity(entityId: number): void
     {
-      if(!this.entities.has(entityId))
+      if(!this.hasEntity(entityId))
       {
         throw new Error(`no entity registered with id ${entityId}`);
       }
@@ -103,12 +113,12 @@ namespace sczCore
     public registerEntity(
       sceneId: number, systemType: Function, entityId: number): void
     {
-      if(!this.entities.has(entityId))
+      if(!this.hasEntity(entityId))
       {
         throw new Error("there is no entity registered with that id");
       }
 
-      let entity = this.entities.get(entityId);
+      let entity = this.getEntity(entityId);
 
       if(!this.scenes.has(sceneId))
       {
