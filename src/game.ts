@@ -72,7 +72,7 @@ namespace sczCore
         throw new Error("scene cannot be null");
       }
 
-      if(this.scenes.has(scene.getId()))
+      if(this.hasScene(scene.getId()))
       {
         throw new Error("a scene with this id has already been registered");
       }
@@ -85,9 +85,19 @@ namespace sczCore
       return this.scenes.has(scenesId);
     }
 
+    public getScene(sceneid: number): Scene
+    {
+      if(!this.hasScene(sceneid))
+      {
+        throw new Error(`scene [${sceneid}] not registered`);
+      }
+
+      return this.scenes.get(sceneid);
+    }
+
     public removeScene(scenesId: number): void
     {
-      if(!this.scenes.has(scenesId))
+      if(!this.hasScene(scenesId))
       {
         throw new Error(`no scene registered with id ${scenesId}`);
       }
@@ -97,7 +107,7 @@ namespace sczCore
 
     public addSystem(sceneId: number, system: System): void
     {
-      if(!this.scenes.has(sceneId))
+      if(!this.hasScene(sceneId))
       {
         throw new Error("there is no system registered with that id");
       }
@@ -107,7 +117,7 @@ namespace sczCore
         throw new Error("system cannot be null");
       }
 
-      this.scenes.get(sceneId).addSystem(system);
+      this.getScene(sceneId).addSystem(system);
     }
 
     public registerEntity(
@@ -120,12 +130,12 @@ namespace sczCore
 
       let entity = this.getEntity(entityId);
 
-      if(!this.scenes.has(sceneId))
+      if(!this.hasScene(sceneId))
       {
         throw new Error("there is no system registered with that id");
       }
 
-      let scene = this.scenes.get(sceneId);
+      let scene = this.getScene(sceneId);
 
       if(!scene.hasSystem(systemType))
       {

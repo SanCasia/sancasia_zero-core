@@ -135,18 +135,124 @@ namespace sczCore.tests
       }
     }
 
-    public static canAddRemoveScene()
+    public static canAddScene()
     {
       let game = new Game();
       game.addScene(new SceneBase(0, game.getEventBus()));
       if(!game.hasScene(0))
       {
-        throw new Error("scene not visible");
+        throw new Error("scene [0] not visible");
       }
+
+      game.addScene(new SceneBase(1, game.getEventBus()));
+      if(!game.hasScene(1))
+      {
+        throw new Error("scene [1] not visible");
+      }
+
+      let exeptionThrown = false;
+      try
+      {
+        game.addScene(new SceneBase(0, game.getEventBus()));
+      }
+      catch(Error)
+      {
+        exeptionThrown = true;
+      }
+      if(!exeptionThrown)
+      {
+        throw new Error("scene double registration not detected");
+      }
+    }
+
+    public static canHasScene()
+    {
+      let game = new Game();
+      game.addScene(new SceneBase(0, game.getEventBus()));
+      if(!game.hasScene(0))
+      {
+        throw new Error("scene [0] not visible");
+      }
+
+      game.addScene(new SceneBase(1, game.getEventBus()));
+      if(!game.hasScene(1))
+      {
+        throw new Error("scene [1] not visible");
+      }
+
       game.removeScene(0);
       if(game.hasScene(0))
       {
-        throw new Error("scene not delted");
+        throw new Error("scene [0] not delted");
+      }
+
+      game.removeScene(1);
+      if(game.hasScene(1))
+      {
+        throw new Error("scene [1] not delted");
+      }
+    }
+
+    public static canGetScene()
+    {
+      let game = new Game();
+      game.addScene(new SceneBase(0, game.getEventBus()));
+      game.addScene(new SceneBase(1, game.getEventBus()));
+      if(game.getScene(0).getId() != 0)
+      {
+        throw new Error("could not get entity");
+      }
+
+      if(game.getScene(1).getId() != 1)
+      {
+        throw new Error("could not get entity");
+      }
+
+      let exeptionThrown = false;
+      try
+      {
+        game.getScene(2);
+      }
+      catch(Error)
+      {
+        exeptionThrown = true;
+      }
+      if(!exeptionThrown)
+      {
+        throw new Error("unexpected behavior");
+      }
+    }
+
+    public static canRemoveScene()
+    {
+      let game = new Game();
+      game.addScene(new SceneBase(0, game.getEventBus()));
+      game.addScene(new SceneBase(1, game.getEventBus()));
+
+      game.removeScene(0);
+      if(game.hasScene(0))
+      {
+        throw new Error("scene [0] not delted");
+      }
+
+      game.removeScene(1);
+      if(game.hasScene(1))
+      {
+        throw new Error("scene [0] not delted");
+      }
+
+      let exeptionThrown = false;
+      try
+      {
+        game.removeScene(0);
+      }
+      catch(Error)
+      {
+        exeptionThrown = true;
+      }
+      if(!exeptionThrown)
+      {
+        throw new Error("scene double removal not detected");
       }
     }
 
