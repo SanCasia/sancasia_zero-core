@@ -11,7 +11,7 @@ namespace sczCore.tests
   class TestSystem extends SystemBase
   {
     public static readonly event = EngineEvent.Computation;
-    
+
     constructor(eventBus: EventBus)
     {
       super([TestComponent], eventBus, TestSystem.event);
@@ -46,14 +46,10 @@ namespace sczCore.tests
     {
       let system = new TestSystem(new EventBus());
       let entity = new Entity(0);
-      let component = new TestComponent();
-      entity.addComponent(component);
-
+      entity.addComponent(new TestComponent());
       system.registerEntity(entity);
 
-      // @ts-ignore: Property 'subscribers' is private and only accessible within class 'EventBus'.
-      if(!system.entities.has(0)
-        || system.entities.get(entity.getId()) != entity)
+      if(!system.hasEntityRegistered(0))
       {
         throw new Error("entity not registered correctly")
       }
@@ -68,6 +64,38 @@ namespace sczCore.tests
       }
     }
 
+    public static canHasEntity()
+    {
+      let system = new TestSystem(new EventBus());
+      let entity = new Entity(0);
+      entity.addComponent(new TestComponent());
+      system.registerEntity(entity);
+      if(!system.hasEntityRegistered(0))
+      {
+        throw new Error("entity [0] not visible");
+      }
+
+      let entity_one = new Entity(1);
+      entity_one.addComponent(new TestComponent());
+      system.registerEntity(entity_one);
+      if(!system.hasEntityRegistered(1))
+      {
+        throw new Error("entity [1] not visible");
+      }
+
+      system.deregisterEntity(0);
+      if(system.hasEntityRegistered(0))
+      {
+        throw new Error("entity [0] not delted");
+      }
+
+      system.deregisterEntity(1);
+      if(system.hasEntityRegistered(1))
+      {
+        throw new Error("entity [1] not delted");
+      }
+    }
+
     public static canDeregisterEntity()
     {
       let system = new TestSystem(new EventBus());
@@ -78,8 +106,7 @@ namespace sczCore.tests
       system.registerEntity(entity);
       system.deregisterEntity(entity.getId());
 
-      // @ts-ignore: Property 'subscribers' is private and only accessible within class 'EventBus'.
-      if(system.entities.has(entity.getId()))
+      if(system.hasEntityRegistered(entity.getId()))
       {
         throw new Error("entity not deregistered correctly")
       }

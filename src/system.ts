@@ -6,7 +6,8 @@ namespace sczCore
     deactivate(): void;
     readonly isActive: boolean;
     registerEntity(entity: Entity):void;
-    deregisterEntity(id: number): void;
+    hasEntityRegistered(entityId: number): boolean;
+    deregisterEntity(entityId: number): void;
     process(deltaTime: number): void;
   }
 
@@ -49,15 +50,24 @@ namespace sczCore
 
     public registerEntity(entity: Entity): void
     {
+      if(this.hasEntityRegistered(entity.getId()))
+      {
+        throw new Error(`entity [${entity.getId()}] already registered`);
+      }
       entity.createCache(this, this.requires);
       this.entities.set(entity.getId(), entity);
     }
 
-    public deregisterEntity(id: number): void
+    public hasEntityRegistered(entityId: number): boolean
     {
-      let entity = this.entities.get(id);
+      return this.entities.has(entityId);
+    }
+
+    public deregisterEntity(entityId: number): void
+    {
+      let entity = this.entities.get(entityId);
       entity.deleteCache(this);
-      this.entities.delete(id);
+      this.entities.delete(entityId);
     }
 
     public process = (deltaTime: number): void =>
