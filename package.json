@@ -1,6 +1,6 @@
 {
   "name": "sancasia_zero-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "This is the core package of the SanCasia Zero engine",
   "main": "obj/sancasia_zero_core.js",
   "directories": {
@@ -21,7 +21,7 @@
     "sancasia-zero",
     "game-engine-core"
   ],
-  "author": "Simon Kindhauser",
+  "author": "SanCasia",
   "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/SanCasia/sancasia_zero-core/issues"
