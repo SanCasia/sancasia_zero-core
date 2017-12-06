@@ -3,7 +3,7 @@ namespace sczCore
   export class Game
   {
     protected eventBus: EventBus;
-    protected engine: Engine;
+    protected _engine: Engine;
     protected entities: Map<number, Entity>;
     protected scenes: Map<number, Scene>;
 
@@ -15,7 +15,7 @@ namespace sczCore
       }
 
       this.eventBus = eventBus;
-      this.engine = new Engine(this.eventBus);
+      this._engine = new Engine(this.eventBus);
       this.entities = new Map<number, Entity>();
       this.scenes = new Map<number, Scene>();
     }
@@ -174,12 +174,17 @@ namespace sczCore
 
     public start(): void
     {
-        this.engine.start();
+        this._engine.start();
     }
 
     public stop(): void
     {
-      this.engine.stop();
+      this._engine.stop();
+    }
+
+    public get engine(): Engine
+    {
+      return this._engine;
     }
   }
 }
