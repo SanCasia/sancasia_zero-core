@@ -25,6 +25,7 @@ namespace sczCore
 
       this.eventBus = eventBus;
       this._isRunning = false;
+      this.timeAtLastFrame = new Date().getTime();
     }
 
     public getEventBus()
@@ -51,7 +52,7 @@ namespace sczCore
     private engineLoop = () =>
     {
       let currentTime = new Date().getTime();
-      let deltaTime = this.timeAtLastFrame - currentTime;
+      let deltaTime = currentTime - this.timeAtLastFrame;
       this.timeAtLastFrame = currentTime;
 
       this.eventBus.publish(EngineEvent.PreComputation, deltaTime);
