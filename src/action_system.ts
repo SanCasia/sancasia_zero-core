@@ -1,22 +1,14 @@
 namespace sczCore
 {
-  export interface System extends Prop
-  {
-    activate(): void;
-    deactivate(): void;
-    readonly isActive: boolean;
-    registerEntity(entity: Entity):void;
-    hasEntityRegistered(entityId: number): boolean;
-    deregisterEntity(entityId: number): void;
-    process(deltaTime: number): void;
-  }
 
-  export abstract class SystemBase implements System
+  export abstract class ActionSystem implements System
   {
+    protected actionQueue: Array<ActionEvent>;
     protected entities: Map<number, Entity>;
     protected requires: Array<Function>;
     protected eventBus: EventBus;
     protected event: EngineEvent;
+    protected events: Array<string>;
     protected _isActive: boolean;
 
     public get isActive(): boolean
@@ -25,26 +17,40 @@ namespace sczCore
     }
 
     constructor(
-      requires: Array<Function>,
-      eventBus: EventBus, event: EngineEvent)
+      requiredComponentsInEntities: Array<Function>,
+      listensTo: Array<string>,
+      eventBus: EventBus)
     {
 
-      this.requires = requires;
+      this.requires = requiredComponentsInEntities;
+      this.events = listensTo;
       this.entities = new Map<number, Entity>();
+      this.actionQueue = new Array<ActionEvent>();
 
       this.eventBus = eventBus;
-      this.event = event;
+      this.event = EngineEvent.Computation;
     }
 
     public activate(): void
     {
       this.eventBus.subscribe(this.event, this.process);
+
+      for(let event of this.events)
+      {
+        this.eventBus.subscribe(event, this.queueEvent);
+      }
+
       this._isActive = true;
     }
 
     public deactivate(): void
     {
       this.eventBus.unsubscribe(this.event, this.process);
+      for(let event of this.events)
+      {
+        this.eventBus.unsubscribe(event, this.queueEvent);
+      }
+
       this._isActive = false;
     }
 
@@ -70,17 +76,28 @@ namespace sczCore
       this.entities.delete(entityId);
     }
 
+    private queueEvent = (actionEvent: ActionEvent): void =>
+    {
+      this.actionQueue.push(actionEvent);
+    }
+
     public process = (deltaTime: number): void =>
     {
       for(let entity of this.entities.values())
       {
-        let cache = entity.getCache(this);
-        this.processEntity(deltaTime, cache);
-        entity.updateCache(this, cache);
-      };
+        while(this.actionQueue.length > 0)
+        {
+          let event = this.actionQueue.shift();
+          let cache = entity.getCache(this);
+          this.processEntity(deltaTime, cache, event);
+          entity.updateCache(this, cache);
+        }
+      }
     }
 
     protected abstract processEntity(
-      deltaTime: number, components: Array<Component>): void;
+      deltaTime: number,
+      components: Array<Component>,
+      actionEvent: ActionEvent): void;
   }
 }

@@ -3,10 +3,10 @@ namespace sczCore
   export interface Scene
   {
     getId(): number;
-    addSystem(system: System): void;
-    hasSystem(systemType: Function): boolean;
-    getSystem(systemType: Function): System;
-    removeSystem(systemType: Function): void;
+    addProp(prop: Prop): void;
+    hasProp(propType: Function): boolean;
+    getProp(propType: Function): Prop;
+    removeProp(propType: Function): void;
     activate(): void;
     deactivate(): void;
     readonly isActive: boolean;
@@ -21,7 +21,7 @@ namespace sczCore
   export class SceneBase implements Scene
   {
     protected readonly id: number;
-    protected systems: Map<Function, System>;
+    protected props: Map<Function, Prop>;
     protected eventBus: EventBus;
     protected _isActive: boolean;
 
@@ -32,7 +32,7 @@ namespace sczCore
       this.eventBus.subscribe(
         EngineEvent.SceneChange,
         this.sceneChangeListener);
-      this.systems = new Map<Function, System>();
+      this.props = new Map<Function, Prop>();
     }
 
     public getId()
@@ -45,45 +45,46 @@ namespace sczCore
       return this._isActive;
     }
 
-    public addSystem(system: System): void
+    public addProp(prop: Prop): void
     {
-      if(this.hasSystem(system.constructor))
+      if(this.hasProp(prop.constructor))
       {
         throw new Error(
-          `scene already has this type of system: ${system.constructor}`);
+          `scene already has this type of prop: ${prop.constructor}`);
       }
 
-      this.systems.set(system.constructor, system);
+      this.props.set(prop.constructor, prop);
     }
 
-    public hasSystem(systemType: Function)
+    public hasProp(propType: Function)
     {
-      return this.systems.has(systemType);
+      return this.props.has(propType);
     }
 
-    public getSystem(systemType: Function): System
+
+    public getProp(propType: Function): Prop
     {
-      if(!this.hasSystem(systemType))
+      if(!this.hasProp(propType))
       {
-        throw new Error(`scene has no such system: ${systemType}`);
+        throw new Error(`scene has no such prop: ${propType}`);
       }
-      
-      return this.systems.get(systemType);
+
+      return this.props.get(propType);
     }
 
-    public removeSystem(systemType: Function)
+    public removeProp(propType: Function)
     {
-      if(!this.hasSystem(systemType))
+      if(!this.hasProp(propType))
       {
-        throw new Error(`scene has no such system: ${systemType}`);
+        throw new Error(`scene has no such prop: ${propType}`);
       }
 
-      this.systems.delete(systemType);
+      this.props.delete(propType);
     }
 
     public activate(): void
     {
-      for(let system of this.systems.values())
+      for(let system of this.props.values())
       {
         if(!system.isActive)
         {
@@ -95,7 +96,7 @@ namespace sczCore
 
     public deactivate(): void
     {
-      for(let system of this.systems.values())
+      for(let system of this.props.values())
       {
         if(system.isActive)
         {

@@ -105,61 +105,6 @@ namespace sczCore
       this.scenes.delete(scenesId);
     }
 
-    public addSystem(sceneId: number, system: System): void
-    {
-      if(!this.hasScene(sceneId))
-      {
-        throw new Error("there is no system registered with that id");
-      }
-
-      if(system == null)
-      {
-        throw new Error("system cannot be null");
-      }
-
-      this.getScene(sceneId).addSystem(system);
-    }
-
-    public hasSystem(sceneId: number, systemType: Function): boolean
-    {
-      let scene = this.getScene(sceneId);
-      return scene.hasSystem(systemType);
-    }
-
-    public getSystem(sceneId: number, systemType: Function): System
-    {
-      let scene = this.getScene(sceneId);
-      return scene.getSystem(systemType);
-    }
-
-    public removeSystem(sceneId: number, systemType: Function): void
-    {
-        let scene = this.getScene(sceneId);
-        scene.removeSystem(systemType);
-    }
-
-    public registerEntity(
-      sceneId: number, systemType: Function, entityId: number): void
-    {
-      let entity = this.getEntity(entityId);
-      let system = this.getSystem(sceneId, systemType);
-      system.registerEntity(entity);
-    }
-
-    public deregisterEntity(
-      sceneId: number, systemType: Function, entityId: number): void
-    {
-      let system = this.getSystem(sceneId, systemType);
-      system.deregisterEntity(entityId);
-    }
-
-    public hasEntityRegistered(
-      sceneId: number, systemType: Function, entityId: number): boolean
-    {
-      let system = this.getSystem(sceneId, systemType);
-      return system.hasEntityRegistered(entityId);
-    }
-
     public activateScene(sceneId: number): void
     {
       this.eventBus.publish(

@@ -33,7 +33,7 @@ namespace sczCore.demo.helloWorld.part3
 
     // the requested components are then passed to this function
     // and we can access and process them with ease.
-    public processEntity(deltaTime: number, [component]: [HelloWorldComponent])
+    public processEntity(_deltaTime: number, [component]: [HelloWorldComponent])
     {
       // log "hello world" to the console
       console.log(`Hello ${ component.name }!`)
@@ -48,29 +48,37 @@ namespace sczCore.demo.helloWorld.part3
       // create the new game object
       // this is initializing a new event bus as well as a new engine
       let game = new Game();
+      let eventBus = game.getEventBus();
 
       let ellasId = 0;
       let ellasSceneId = 0;
+      let ellasName = "Ella";
       // define the first scene
       // scene base suffice for this example
-      game.addScene(new SceneBase(ellasSceneId, game.getEventBus()));
+      let ellasScene = new SceneBase(ellasSceneId, eventBus);
+      game.addScene(ellasScene);
+      // define the first system
+      let ellasSystem = new HelloWorldSystem(eventBus)
       // add a system to the scene
-      game.addSystem(ellasSceneId, new HelloWorldSystem(game.getEventBus()));
-      // add en entity to the game
-      game.addEntity(HelloWorldEntityFactory.create(ellasId, "Ella"));
+      ellasScene.addProp(ellasSystem);
       // register an entity in a system
-      game.registerEntity(ellasSceneId, HelloWorldSystem, ellasId);
+      ellasSystem.registerEntity(
+        HelloWorldEntityFactory.create(ellasId, ellasName));
 
       let stevesId = 1;
       let stevesSceneId = 1;
-      // define the second scene
-      game.addScene(new SceneBase(stevesSceneId, game.getEventBus()));
+      let stevesName = "Steve"
+      // define the first scene
+      // scene base suffice for this example
+      let stevesScene = new SceneBase(stevesSceneId, eventBus);
+      game.addScene(stevesScene);
+      // define the first system
+      let stevesSystem = new HelloWorldSystem(eventBus)
       // add a system to the scene
-      game.addSystem(stevesSceneId, new HelloWorldSystem(game.getEventBus()));
-      // add en entity to the game
-      game.addEntity(HelloWorldEntityFactory.create(stevesId, "Steve"));
+      stevesScene.addProp(stevesSystem);
       // register an entity in a system
-      game.registerEntity(stevesSceneId, HelloWorldSystem, stevesId);
+      stevesSystem.registerEntity(
+        HelloWorldEntityFactory.create(stevesId, stevesName));
 
       // here we use a local variable to know which scene is currently active
       let activeSceneIndicator = ellasSceneId;

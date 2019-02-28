@@ -16,7 +16,7 @@ namespace sczCore.demo.helloWorld.part1
     // this function will get called by the game engine.
     // you can again see "[]".
     // the deltaTime tells us how much time has passed since the last call
-    public processEntity(deltaTime: number, []: Array<Component>)
+    public processEntity(_deltaTime: number, []: Array<Component>)
     {
       // log "hello world" to the console
       console.log("Hello World!")

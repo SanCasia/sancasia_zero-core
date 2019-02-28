@@ -37,7 +37,7 @@ namespace sczCore.demo.helloWorld.part2
 
     // the requested components are then passed to this function
     // and we can access and process them with ease.
-    public processEntity(deltaTime: number, [component]: [HelloWorldComponent])
+    public processEntity(_deltaTime: number, [component]: [HelloWorldComponent])
     {
       // log "hello world" to the console
       console.log(`Hello ${ component.name }!`)
