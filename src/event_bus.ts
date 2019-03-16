@@ -69,7 +69,7 @@ namespace sczCore
         throw new Error("handler is not registered");
       }
 
-      subscribers.splice(index);
+      subscribers.splice(index, 1);
     }
   }
 }

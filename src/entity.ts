@@ -67,13 +67,13 @@ namespace sczCore
       this.components.delete(type);
     }
 
-    public createCache(key: any, components: Array<Function>): void
+    public createCache(key: any, cacheComponents: Array<Function>): void
     {
       let cache = new Array<Component>();
 
-      for(let component of components)
+      for(let cacheComponent of cacheComponents)
       {
-        cache.push(this.components.get(component));
+        cache.push(this.components.get(cacheComponent));
       }
       this.cache.set(key, cache);
     }

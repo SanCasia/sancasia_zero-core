@@ -85,14 +85,16 @@ namespace sczCore
     {
       for(let entity of this.entities.values())
       {
-        while(this.actionQueue.length > 0)
+        let actionQueue = [...this.actionQueue];
+        let cache = entity.getCache(this);
+        while(actionQueue.length > 0)
         {
-          let event = this.actionQueue.shift();
-          let cache = entity.getCache(this);
+          let event = actionQueue.shift();
           this.processEntity(deltaTime, cache, event);
-          entity.updateCache(this, cache);
         }
+        entity.updateCache(this, cache);
       }
+      this.actionQueue = new Array();
     }
 
     protected abstract processEntity(

@@ -13,8 +13,5 @@ namespace sczCore
     {
       return Object.assign(this, component);
     }
-
   }
-
-
 }
