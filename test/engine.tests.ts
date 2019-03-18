@@ -37,6 +37,9 @@ namespace sczCore.tests
     public registerEntity(_: Entity): void {
       throw new Error("Method not implemented.");
     }
+    hasEntityRegistered(_: number): boolean {
+      throw new Error("Method not implemented.");
+    }
     public deregisterEntity(_: number): void {
       throw new Error("Method not implemented.");
     }
@@ -60,18 +63,14 @@ namespace sczCore.tests
         throw new Error("engine not running after start");
       }
 
-      setTimeout(1000, () => {
-        system.value = 3.141;
+      system.value = 3.141;
 
-        setTimeout(1000, () => {
-          if(system.value == 3.141)
-          {
-            throw new Error("engine event not called after stop");
-          }
-        });
-      });
-
-      engine.stop();
+      setTimeout(() => {
+        if(system.value == 3.141)
+        {
+          throw new Error("engine event not called after start");
+        }
+      }, 1000);
     }
 
     public static canTellIfRunning()
@@ -121,16 +120,13 @@ namespace sczCore.tests
         throw new Error("engine did not stop");
       }
 
-      setTimeout(1000, () => {
-        system.value = 3.141;
-        setTimeout(1000, () => {
-          if(system.value != 3.141)
-          {
-            throw new Error("engine event called after stop");
-          }
-        });
-
-      });
+      system.value = 3.141;
+      setTimeout(() => {
+        if(system.value != 3.141)
+        {
+          throw new Error("engine event called after stop");
+        }
+      }, 1000);
     }
 
     public static canRun()
@@ -140,13 +136,29 @@ namespace sczCore.tests
       let system = new TestSystem(eventBus);
 
       engine.start();
-      setTimeout(1000, () => {
+      setTimeout(() => {
         engine.stop();
         if(system.value != 1)
         {
           throw new Error("engine events not called in correct oreder");
         }
-      });
+      }, 1000);
+    }
+
+    public static canCalculateDeltaTime()
+    {
+      let eventBus = new EventBus();
+      let engine = new Engine(eventBus);
+
+      eventBus.subscribe(EngineEvent.Computation, (deltaTime: number) => {
+        if(deltaTime <= 0)
+        {
+          throw new Error(`engine cannot calculate delta time. value is ${deltaTime}`);
+        }
+        engine.stop();
+      })
+
+      engine.start();
     }
   }
 }

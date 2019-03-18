@@ -30,7 +30,6 @@ namespace sczCore
 
       this.events = listensTo;
       this.actionQueue = new Array<ActionEvent>();
-      console.log(this);
     }
 
     public activate(): void
@@ -62,9 +61,8 @@ namespace sczCore
       this.actionQueue.push(actionEvent);
     }
 
-    public process = (deltaTime: number): void =>
+    public process(deltaTime: number): void
     {
-      console.log(this);
       super.process(deltaTime);
       this.actionQueue = new Array();
     }

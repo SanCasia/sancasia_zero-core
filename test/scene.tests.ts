@@ -24,58 +24,58 @@ namespace sczCore.tests
       }
     }
 
-    public static canAddSystem()
+    public static canAddProp()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
-      scene.addSystem(system);
+      scene.addProp(system);
 
-      if(!scene.hasSystem(TestSystem))
+      if(!scene.hasProp(TestSystem))
       {
         throw new Error("scene can not add system");
       }
     }
 
-    public static canHasSystem()
+    public static canHasProp()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
-      scene.addSystem(system);
+      scene.addProp(system);
 
-      if(!scene.hasSystem(TestSystem))
+      if(!scene.hasProp(TestSystem))
       {
         throw new Error("scene can not has system");
       }
     }
 
-    public static canGetSystem()
+    public static canGetProp()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
-      scene.addSystem(system);
+      scene.addProp(system);
 
-      if(system != scene.getSystem(TestSystem))
+      if(system != scene.getProp(TestSystem))
       {
         throw new Error("scene can not get system");
       }
     }
 
-    public static canRemoveSystem()
+    public static canRemoveProp()
     {
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation);
 
-      scene.addSystem(system);
-      scene.removeSystem(TestSystem);
+      scene.addProp(system);
+      scene.removeProp(TestSystem);
 
-      if(scene.hasSystem(TestSystem))
+      if(scene.hasProp(TestSystem))
       {
         throw new Error("scene can not remove system");
       }
@@ -86,7 +86,7 @@ namespace sczCore.tests
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation);
-      scene.addSystem(system);
+      scene.addProp(system);
 
       if(system.isActive)
       {
@@ -106,7 +106,7 @@ namespace sczCore.tests
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation);
-      scene.addSystem(system);
+      scene.addProp(system);
 
       if(system.isActive)
       {
@@ -127,7 +127,7 @@ namespace sczCore.tests
       let eventBus = new EventBus();
       let scene = new SceneBase(0, eventBus);
       let system = new TestSystem([], eventBus, EngineEvent.Computation)
-      scene.addSystem(system);
+      scene.addProp(system);
 
       if(system.isActive)
       {

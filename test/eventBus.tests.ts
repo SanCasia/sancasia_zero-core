@@ -60,21 +60,33 @@ namespace sczCore.tests
     {
       let bus = new EventBus();
       let event = "test_event";
-      let wasCalled = false;
-      let handler = (correctParam: boolean) =>
+      let callCount = 0;
+
+      let handlerOne = (isTrue: boolean) =>
       {
-        wasCalled = correctParam;
+        if(isTrue)
+          callCount++;
+      }
+
+      let handlerTwo = (isTrue: boolean) =>
+      {
+        if(isTrue)
+          callCount++;
       }
 
       bus.subscribe(
         event,
-        handler);
+        handlerOne);
+
+      bus.subscribe(
+        event,
+        handlerTwo);
 
       bus.publish(event, true)
 
-      if(!wasCalled)
+      if(callCount != 2)
       {
-        throw new Error("function was not called correctly");
+        throw new Error("functions were not called correctly");
       }
     }
   }

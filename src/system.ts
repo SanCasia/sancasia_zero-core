@@ -38,13 +38,13 @@ namespace sczCore
 
     public activate(): void
     {
-      this.eventBus.subscribe(this.event, this.process);
+      this.eventBus.subscribe(this.event, this._process);
       this._isActive = true;
     }
 
     public deactivate(): void
     {
-      this.eventBus.unsubscribe(this.event, this.process);
+      this.eventBus.unsubscribe(this.event, this._process);
       this._isActive = false;
     }
 
@@ -70,7 +70,10 @@ namespace sczCore
       this.entities.delete(entityId);
     }
 
-    public process = (deltaTime: number): void =>
+    // workaround for "fat arrow is member function"
+    protected _process = (deltaTime: number) => {this.process(deltaTime);}
+
+    public process(deltaTime: number): void
     {
       for(let entity of this.entities.values())
       {
