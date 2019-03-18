@@ -1,7 +1,9 @@
+/// <reference path="./system.ts" />
+
 namespace sczCore
 {
 
-  export abstract class ActionSystem implements System
+  export abstract class ActionSystem extends SystemBase
   {
     protected actionQueue: Array<ActionEvent>;
     protected entities: Map<number, Entity>;
@@ -21,19 +23,19 @@ namespace sczCore
       listensTo: Array<string>,
       eventBus: EventBus)
     {
+      super(
+        requiredComponentsInEntities,
+        eventBus,
+        EngineEvent.Computation);
 
-      this.requires = requiredComponentsInEntities;
       this.events = listensTo;
-      this.entities = new Map<number, Entity>();
       this.actionQueue = new Array<ActionEvent>();
-
-      this.eventBus = eventBus;
-      this.event = EngineEvent.Computation;
+      console.log(this);
     }
 
     public activate(): void
     {
-      this.eventBus.subscribe(this.event, this.process);
+      super.activate();
 
       for(let event of this.events)
       {
@@ -45,7 +47,8 @@ namespace sczCore
 
     public deactivate(): void
     {
-      this.eventBus.unsubscribe(this.event, this.process);
+      super.deactivate();
+
       for(let event of this.events)
       {
         this.eventBus.unsubscribe(event, this.queueEvent);
@@ -54,50 +57,31 @@ namespace sczCore
       this._isActive = false;
     }
 
-    public registerEntity(entity: Entity): void
-    {
-      if(this.hasEntityRegistered(entity.getId()))
-      {
-        throw new Error(`entity [${entity.getId()}] already registered`);
-      }
-      entity.createCache(this, this.requires);
-      this.entities.set(entity.getId(), entity);
-    }
-
-    public hasEntityRegistered(entityId: number): boolean
-    {
-      return this.entities.has(entityId);
-    }
-
-    public deregisterEntity(entityId: number): void
-    {
-      let entity = this.entities.get(entityId);
-      entity.deleteCache(this);
-      this.entities.delete(entityId);
-    }
-
-    private queueEvent = (actionEvent: ActionEvent): void =>
+    protected queueEvent = (actionEvent: ActionEvent): void =>
     {
       this.actionQueue.push(actionEvent);
     }
 
     public process = (deltaTime: number): void =>
     {
-      for(let entity of this.entities.values())
-      {
-        let actionQueue = [...this.actionQueue];
-        let cache = entity.getCache(this);
-        while(actionQueue.length > 0)
-        {
-          let event = actionQueue.shift();
-          this.processEntity(deltaTime, cache, event);
-        }
-        entity.updateCache(this, cache);
-      }
+      console.log(this);
+      super.process(deltaTime);
       this.actionQueue = new Array();
     }
 
-    protected abstract processEntity(
+    protected processEntity(
+      deltaTime: number,
+      components: Array<Component>)
+    {
+      let actionQueue = [...this.actionQueue];
+      while(actionQueue.length > 0)
+      {
+        let event = actionQueue.shift();
+        this.processEvent(deltaTime, components, event);
+      }
+    }
+
+    protected abstract processEvent(
       deltaTime: number,
       components: Array<Component>,
       actionEvent: ActionEvent): void;

@@ -25,7 +25,6 @@ namespace sczCore
 
       this.eventBus = eventBus;
       this._isRunning = false;
-      this.timeAtLastFrame = new Date().getTime();
     }
 
     public getEventBus()
@@ -41,6 +40,7 @@ namespace sczCore
     public start()
     {
       this._isRunning = true;
+      this.timeAtLastFrame = new Date().getTime();
       window.requestAnimationFrame(this.engineLoop);
     }
 
@@ -51,6 +51,11 @@ namespace sczCore
 
     private engineLoop = () =>
     {
+      if(!this.isRunning)
+      {
+        return;
+      }
+
       let currentTime = new Date().getTime();
       let deltaTime = currentTime - this.timeAtLastFrame;
       this.timeAtLastFrame = currentTime;
@@ -61,10 +66,7 @@ namespace sczCore
       this.eventBus.publish(EngineEvent.Render, deltaTime);
       this.eventBus.publish(EngineEvent.PostRender, deltaTime);
 
-      if(this.isRunning)
-      {
-        window.requestAnimationFrame(this.engineLoop);
-      }
+      window.requestAnimationFrame(this.engineLoop);
     }
   }
 }

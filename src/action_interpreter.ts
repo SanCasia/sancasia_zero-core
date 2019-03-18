@@ -20,6 +20,11 @@ namespace sczCore
     constructor(
       eventBus: EventBus)
     {
+      if(eventBus == null)
+      {
+        throw new Error("event bus must not be null");
+      }
+
       this.eventBus = eventBus;
     }
 
