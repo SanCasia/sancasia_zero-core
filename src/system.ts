@@ -1,3 +1,6 @@
+/// <reference path="./prop.ts" />
+
+
 namespace sczCore
 {
   export interface System extends Prop
@@ -11,41 +14,18 @@ namespace sczCore
     process(deltaTime: number): void;
   }
 
-  export abstract class SystemBase implements System
+  export abstract class SystemBase extends PropBase implements System
   {
     protected entities: Map<number, Entity>;
     protected requires: Array<Function>;
-    protected eventBus: EventBus;
-    protected event: EngineEvent;
-    protected _isActive: boolean;
-
-    public get isActive(): boolean
-    {
-      return this._isActive;
-    }
-
+    
     constructor(
       requires: Array<Function>,
-      eventBus: EventBus, event: EngineEvent)
+      eventbus: EventBus, event: EngineEvent)
     {
-
+      super(eventbus, event);
       this.requires = requires;
       this.entities = new Map<number, Entity>();
-
-      this.eventBus = eventBus;
-      this.event = event;
-    }
-
-    public activate(): void
-    {
-      this.eventBus.subscribe(this.event, this._process);
-      this._isActive = true;
-    }
-
-    public deactivate(): void
-    {
-      this.eventBus.unsubscribe(this.event, this._process);
-      this._isActive = false;
     }
 
     public registerEntity(entity: Entity): void
@@ -69,9 +49,6 @@ namespace sczCore
       entity.deleteCache(this);
       this.entities.delete(entityId);
     }
-
-    // workaround for "fat arrow is member function"
-    protected _process = (deltaTime: number) => {this.process(deltaTime);}
 
     public process(deltaTime: number): void
     {

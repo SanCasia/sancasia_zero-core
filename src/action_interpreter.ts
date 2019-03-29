@@ -7,7 +7,7 @@ namespace sczCore
 
   }
 
-  export abstract class ActionInterpreter
+  export abstract class ActionInterpreter implements Prop
   {
     protected eventBus: EventBus;
     protected _isActive: boolean;
