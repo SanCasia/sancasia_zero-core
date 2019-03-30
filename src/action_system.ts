@@ -6,17 +6,9 @@ namespace sczCore
   export abstract class ActionSystem extends SystemBase
   {
     protected actionQueue: Array<ActionEvent>;
-    protected entities: Map<number, Entity>;
     protected requires: Array<Function>;
-    protected eventBus: EventBus;
-    protected event: EngineEvent;
     protected events: Array<string>;
-    protected _isActive: boolean;
 
-    public get isActive(): boolean
-    {
-      return this._isActive;
-    }
 
     constructor(
       requiredComponentsInEntities: Array<Function>,
@@ -38,10 +30,8 @@ namespace sczCore
 
       for(let event of this.events)
       {
-        this.eventBus.subscribe(event, this.queueEvent);
+        this.eventbus.subscribe(event, this.queueEvent);
       }
-
-      this._isActive = true;
     }
 
     public deactivate(): void
@@ -50,10 +40,8 @@ namespace sczCore
 
       for(let event of this.events)
       {
-        this.eventBus.unsubscribe(event, this.queueEvent);
+        this.eventbus.unsubscribe(event, this.queueEvent);
       }
-
-      this._isActive = false;
     }
 
     protected queueEvent = (actionEvent: ActionEvent): void =>
